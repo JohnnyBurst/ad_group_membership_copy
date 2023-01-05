@@ -1,0 +1,8 @@
+Adding sharepoint permissions which requires creation and editing of local AD groups to be copied up to AzureAD. Nested groups have shown to cause errors thus to avoid potential issues, this must be done on a local domain controller.
+
+Get list of permissions to be copied over from existing group and confirm membership
+PS C:\> Get-ADGroupMember -Identity "Group A" | Select-Object Name | Sort-Object Name
+Copy group membership from Group A to Group B for sharepoint access
+PS C:\> Get-ADGroupMember -Identity "Group A" | ForEach-Object {Add-ADGroupMember -Identity "Group B" -Members $_.distinguishedName}
+Confirm membership for group.
+PS C:\> Get-ADGroupMember -Identity "Group B" | Select-Object Name | Sort-Object Name
